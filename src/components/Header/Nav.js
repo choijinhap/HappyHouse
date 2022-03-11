@@ -5,7 +5,7 @@ function Nav() {
 		<div className='nav'>
 			<div className='logo'>
 				<Link to='/'>
-					<img src='./img/logo.png' />
+					<img src='/img/logo.png' />
 				</Link>
 			</div>
 			<nav className='menu'>
