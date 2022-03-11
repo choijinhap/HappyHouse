@@ -1,0 +1,27 @@
+.house-list {
+	width: 30vw;
+}
+.house-list > * {
+	margin: 20px;
+}
+
+.house-infos {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-column-gap: 20px;
+}
+.buttons {
+	display: flex;
+	justify-content: space-around;
+}
+.buttons > * {
+	padding: 5px 10px;
+	/* border: 2px solid rgb(61,61,61); */
+	background-color: rgb(61, 61, 61);
+	color: white;
+	border-radius: 10px;
+}
+
+.buttons > *:hover {
+	cursor: pointer;
+}

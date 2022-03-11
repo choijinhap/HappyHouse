@@ -1,0 +1,8 @@
+.house-info > * {
+	margin: 10px 0;
+}
+.house-info hr {
+	width: 70%;
+	text-align: center;
+	margin: 0px auto;
+}

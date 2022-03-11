@@ -28,7 +28,6 @@ function App() {
 		navigate(`/search/${county}`);
 	}
 	useEffect(() => {
-		console.log(pathname);
 		if (pathname === '/') setCity('0');
 	}, [pathname]);
 	return (
@@ -58,7 +57,11 @@ function App() {
 					<Route path='/search/:county' element={<HouseList />} />
 				</Routes>
 				<div className='map'>
-					<img src='/img/map.png' alt='' />
+					<img
+						src='/img/map.png'
+						alt=''
+						style={{ width: '600px', height: '800px' }}
+					/>
 				</div>
 			</div>
 			<div className='footer'>

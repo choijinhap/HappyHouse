@@ -1,16 +1,4 @@
-header{
-    display: flex;
-    flex-direction: column;
-}
-
-.top {
+header {
 	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
-    padding: 5px 10px;
-    background-color: rgb(61, 61, 61);
-}
-.top a{
-    margin: 10px;
-    color: white;
+	flex-direction: column;
 }
