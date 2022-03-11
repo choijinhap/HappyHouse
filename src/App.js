@@ -6,29 +6,31 @@ import HouseList from './components/HouseList';
 import { useEffect, useState } from 'react';
 import getHouseData from './API/HouseDetail';
 import MainLeft from './components/MainLeft';
-import Test from './components/Test';
 import {
 	BrowserRouter,
 	Route,
 	Routes,
 	Link,
 	useNavigate,
+	useLocation,
 } from 'react-router-dom';
 import './css/App.css';
 function App() {
 	const [city, setCity] = useState('0');
-	// const [county, setCounty] = useState('0');
 	const [userInfo, setUserInfo] = useState(null);
-	const [houses, setHouses] = useState(null);
 	const navigate = useNavigate();
+	const { pathname } = useLocation();
 	function onCityChange(e) {
 		setCity(e.target.value);
 	}
 	async function onCountyChange(e) {
-		// setCounty(e.target.value);
 		const county = e.target.value;
 		navigate(`/search/${county}`);
 	}
+	useEffect(() => {
+		console.log(pathname);
+		if (pathname === '/') setCity('0');
+	}, [pathname]);
 	return (
 		<div className='App'>
 			<Header setUserInfo={setUserInfo} userInfo={userInfo} />
@@ -36,7 +38,12 @@ function App() {
 				<img src='/img/main_image.png' />
 			</div>
 			<div className='search'>
-				<DropDown head='도/광역시' options={cities} onChange={onCityChange} />
+				<DropDown
+					head='도/광역시'
+					selected={city}
+					options={cities}
+					onChange={onCityChange}
+				/>
 				<DropDown
 					head='시/구/군'
 					options={counties.filter((county) => {
@@ -48,14 +55,7 @@ function App() {
 			<div className='main'>
 				<Routes>
 					<Route path='/' element={<MainLeft />} />
-					<Route
-						path='/search/:county'
-						element={<HouseList houses={houses} />}
-					/>
-					{/* <Route
-							path='/search'
-							element={<HouseList houses={houses} }/>}
-						></Route> */}
+					<Route path='/search/:county' element={<HouseList />} />
 				</Routes>
 				<div className='map'>
 					<img src='/img/map.png' alt='' />
