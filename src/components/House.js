@@ -8,6 +8,8 @@ function House({ house }) {
 			<p>
 				거래날짜:{house['년']}-{house['월']}-{house['일']}
 			</p>
+			<p>{house['법정동']}</p>
+			<p>{house['법정동읍면동코드']}</p>
 			<hr/>
 		</div>
 	);

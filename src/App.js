@@ -12,6 +12,7 @@ function App() {
 	const [dong, setDong] = useState([]);
 	const [city, setCity] = useState('0');
 	const [county, setCounty] = useState('0');
+	const [town, setTown] = useState('0');
 	const [userInfo, setUserInfo] = useState(null);
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
@@ -21,6 +22,10 @@ function App() {
 	async function onCountyChange(e) {
 		setCounty(e.target.value);
 		navigate(`/search/${e.target.value.slice(0, 5)}`);
+	}
+	async function onTownChange(e) {
+		setTown(e.target.value);
+		navigate(`/search/${e.target.value.slice(0, 5)}/${e.target.value}`);
 	}
 
 	useEffect(() => {
@@ -50,6 +55,18 @@ function App() {
 	}, [county]);
 	useEffect(() => {
 		if (pathname === '/') setCity('0');
+		// let path=pathname.split()
+		console.log(pathname.split('/'));
+		if (pathname.split('/')[1] === 'search') {
+			const path = pathname.split('/');
+			if (path[2]) {
+				setCity(path[2].slice(0, 2) + '00000000');
+				setCounty(path[2] + '00000');
+			}
+			if (path[3]) {
+				setTown(path[3]);
+			}
+		}
 	}, [pathname]);
 	return (
 		<div className='App'>
@@ -69,6 +86,7 @@ function App() {
 				{gugun && (
 					<DropDown
 						head='시 / 구 / 군'
+						selected={county}
 						options={gugun
 							.filter((c) => {
 								return (
@@ -88,6 +106,7 @@ function App() {
 				{dong && (
 					<DropDown
 						head='동선택'
+						selected={town}
 						options={dong
 							.filter((d) => {
 								return (
@@ -101,7 +120,7 @@ function App() {
 								newName.shift();
 								return { code: d.code, name: newName.join(' ') };
 							})}
-						// onChange={onDongChange}
+						onChange={onTownChange}
 					/>
 				)}
 			</div>
@@ -109,6 +128,7 @@ function App() {
 				<Routes>
 					<Route path='/' element={<MainLeft />} />
 					<Route path='/search/:county' element={<HouseList />} />
+					<Route path='/search/:county/:town' element={<HouseList />} />
 				</Routes>
 				<div className='map'>
 					<img
