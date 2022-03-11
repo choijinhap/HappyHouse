@@ -1,22 +1,17 @@
 import DropDown from './components/DropDown';
-import { cities } from './API/Cities';
-import { counties } from './API/Counties';
 import Header from './components/Header/Header';
 import HouseList from './components/HouseList';
 import { useEffect, useState } from 'react';
-import getHouseData from './API/HouseDetail';
 import MainLeft from './components/MainLeft';
-import {
-	BrowserRouter,
-	Route,
-	Routes,
-	Link,
-	useNavigate,
-	useLocation,
-} from 'react-router-dom';
+import getRegions from './API/Region';
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import './css/App.css';
 function App() {
+	const [sido, setSido] = useState();
+	const [gugun, setGugun] = useState([]);
+	const [dong, setDong] = useState([]);
 	const [city, setCity] = useState('0');
+	const [county, setCounty] = useState('0');
 	const [userInfo, setUserInfo] = useState(null);
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
@@ -24,9 +19,35 @@ function App() {
 		setCity(e.target.value);
 	}
 	async function onCountyChange(e) {
-		const county = e.target.value;
-		navigate(`/search/${county}`);
+		setCounty(e.target.value);
+		navigate(`/search/${e.target.value.slice(0, 5)}`);
 	}
+
+	useEffect(() => {
+		async function getSido() {
+			const res = await getRegions('*00000000');
+			setSido(res.data.regcodes);
+		}
+		getSido();
+	}, []);
+	useEffect(() => {
+		async function getGugun() {
+			if (city !== '0') {
+				const res = await getRegions(city.slice(0, 2) + '*00000');
+				setGugun(res.data.regcodes);
+			}
+		}
+		getGugun();
+	}, [city]);
+	useEffect(() => {
+		async function getDong() {
+			if (county !== '0') {
+				const res = await getRegions(county.slice(0, 4) + '*');
+				setDong(res.data.regcodes);
+			}
+		}
+		getDong();
+	}, [county]);
 	useEffect(() => {
 		if (pathname === '/') setCity('0');
 	}, [pathname]);
@@ -37,19 +58,52 @@ function App() {
 				<img src='/img/main_image.png' />
 			</div>
 			<div className='search'>
-				<DropDown
-					head='도/광역시'
-					selected={city}
-					options={cities}
-					onChange={onCityChange}
-				/>
-				<DropDown
-					head='시/구/군'
-					options={counties.filter((county) => {
-						return county.value.slice(0, 2) === city;
-					})}
-					onChange={onCountyChange}
-				/>
+				{sido && (
+					<DropDown
+						head='도 / 광역시'
+						selected={city}
+						options={sido}
+						onChange={onCityChange}
+					/>
+				)}
+				{gugun && (
+					<DropDown
+						head='시 / 구 / 군'
+						options={gugun
+							.filter((c) => {
+								return (
+									city.slice(0, 2) === c.code.slice(0, 2) &&
+									c.name.split(' ').length > 1
+								);
+							})
+							.map((c) => {
+								let newName = c.name.split(' ');
+								newName.shift();
+
+								return { code: c.code, name: newName.join(' ') };
+							})}
+						onChange={onCountyChange}
+					/>
+				)}
+				{dong && (
+					<DropDown
+						head='동선택'
+						options={dong
+							.filter((d) => {
+								return (
+									county.slice(0, 5) === d.code.slice(0, 5) &&
+									d.name.split(' ').length > 2
+								);
+							})
+							.map((d) => {
+								let newName = d.name.split(' ');
+								newName.shift();
+								newName.shift();
+								return { code: d.code, name: newName.join(' ') };
+							})}
+						// onChange={onDongChange}
+					/>
+				)}
 			</div>
 			<div className='main'>
 				<Routes>
