@@ -1,0 +1,19 @@
+.nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.nav .logo img {
+	width: 150px;
+	height: 100px;
+}
+.nav .menu {
+	display: flex;
+	flex-direction: row;
+	margin: auto 0;
+}
+
+.nav .menu > div{
+    margin: 0 15px;
+    font-weight: 600;
+}
