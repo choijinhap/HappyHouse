@@ -3,7 +3,10 @@
 	padding: 0;
 	text-align: center;
 }
-
+body{
+	width: 100vw;
+	overflow-x: hidden;
+}
 li {
 	list-style-type: none;
 }
@@ -16,6 +19,10 @@ li {
 .main {
 	display: flex;
 	margin: 5px 20px;
+	z-index: -2;
+}
+.main > div{
+	margin: auto;
 }
 .main .main-left {
 	margin-right: 30px;

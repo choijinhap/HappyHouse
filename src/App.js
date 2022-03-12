@@ -1,4 +1,3 @@
-import DropDown from './components/DropDown';
 import Header from './components/Header/Header';
 import HouseList from './components/HouseList';
 import { useEffect, useState } from 'react';
@@ -8,7 +7,7 @@ import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import './css/App.css';
 import Search from './components/Search';
 import Footer from './components/Footer';
-import Map from './components/Map';
+import Gmap from './components/Gmap';
 function App() {
 	const [sido, setSido] = useState();
 	const [gugun, setGugun] = useState([]);
@@ -19,6 +18,8 @@ function App() {
 	const [userInfo, setUserInfo] = useState(null);
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
+	const [showedhouses, setShowedHouses] = useState();
+
 	function onCityChange(e) {
 		setCity(e.target.value);
 	}
@@ -90,10 +91,26 @@ function App() {
 			<div className='main'>
 				<Routes>
 					<Route path='/' element={<MainLeft />} />
-					<Route path='/search/:county' element={<HouseList />} />
-					<Route path='/search/:county/:town' element={<HouseList />} />
+					<Route
+						path='/search/:county'
+						element={
+							<HouseList
+								setShowedHouses={setShowedHouses}
+								showedhouses={showedhouses}
+							/>
+						}
+					/>
+					<Route
+						path='/search/:county/:town'
+						element={
+							<HouseList
+								setShowedHouses={setShowedHouses}
+								showedhouses={showedhouses}
+							/>
+						}
+					/>
 				</Routes>
-				<Map />
+				<Gmap houses={showedhouses} />
 			</div>
 			<Footer />
 		</div>

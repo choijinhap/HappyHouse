@@ -40,4 +40,5 @@
 	width: 100vw;
 	height: 100vh;
 	background-color: rgba(61, 61, 61, 0.6);
+	z-index: 1;
 }

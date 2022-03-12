@@ -3,13 +3,14 @@ import { useParams } from 'react-router-dom';
 import getHouseData from '../API/HouseDetail';
 import House from './House';
 import '../css/HouseList.css';
-function HouseList() {
+function HouseList({ setShowedHouses, showedhouses }) {
 	const MAX_LIST_NUM = 10;
 	const { county, town } = useParams();
 	const [page, setPage] = useState(0);
 	const [houses, setHouses] = useState([]);
 	const [filteredHouses, setFilteredHouses] = useState([]);
-	const [showedhouses, setShowedHouses] = useState();
+	// const [showedhouses, setShowedHouses] = useState();
+
 	useEffect(() => {
 		async function fetchData() {
 			const res = await getHouseData('', '100000', county, 202101);
@@ -49,8 +50,6 @@ function HouseList() {
 	useEffect(() => {
 		if (town) {
 			const filtered = houses.filter((house) => {
-				console.log(house['법정동읍면동코드']);
-				console.log(town.slice(5, 10));
 				return house['법정동읍면동코드'].toString() === town.slice(5, 10);
 			});
 			setFilteredHouses(filtered);
@@ -68,7 +67,7 @@ function HouseList() {
 			<div className='house-infos'>
 				{showedhouses &&
 					showedhouses.map((element, i) => {
-						console.log(element);
+						// console.log(element);
 						return <House house={element} key={i} />;
 					})}
 			</div>

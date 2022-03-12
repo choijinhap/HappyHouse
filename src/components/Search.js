@@ -1,5 +1,15 @@
-import DropDown from "./DropDown";
-function Search({sido,city,onCityChange,county,gugun,onCountyChange,dong,town,onTownChange}) {
+import DropDown from './DropDown';
+function Search({
+	sido,
+	city,
+	onCityChange,
+	county,
+	gugun,
+	onCountyChange,
+	dong,
+	town,
+	onTownChange,
+}) {
 	return (
 		<div className='search'>
 			{sido && (
