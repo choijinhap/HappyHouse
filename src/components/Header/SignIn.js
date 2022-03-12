@@ -1,5 +1,6 @@
 import { useState } from 'react';
-
+import '../../css/modal.css';
+import Overlay from '../Overlay';
 function SignIn({ isOpen, close, setUserInfo }) {
 	const [id, setId] = useState('');
 	const [pw, setPw] = useState('');
@@ -29,38 +30,47 @@ function SignIn({ isOpen, close, setUserInfo }) {
 	return (
 		<>
 			{isOpen ? (
-				<div className='modal'>
-					<div>
-						<div className='loginModal'>
-							<span className='close' onClick={close}>
-								&times;
-							</span>
-							<div className='modalContents'>
-								<input
-									name='loginId'
-									className='loginId'
-									type='text'
-									placeholder='아이디'
-									onChange={loginIdHandler}
-								/>
-								<input
-									name='loginPw'
-									className='loginPw'
-									type='password'
-									placeholder='비밀번호'
-									onChange={loginPwHandler}
-								/>
-								<div className='loginMid'>
-									<div className='findPw'>비밀번호 찾기</div>
+				<>
+					<div className='modal'>
+						<div>
+							<div className='loginModal'>
+								<div className='modal-header'>
+									<h1 className='title'>로그인</h1>
+									<img
+										className='close'
+										onClick={close}
+										src='/img/icons8-x-50.png'
+										alt=''
+									/>
 								</div>
-								<button className='loginBtn' onClick={loginClickHandler}>
-									{' '}
-									로그인{' '}
-								</button>
+								<div className='modal-contents'>
+									<input
+										name='loginId'
+										className='loginId'
+										type='text'
+										placeholder='아이디'
+										onChange={loginIdHandler}
+									/>
+									<input
+										name='loginPw'
+										className='loginPw'
+										type='password'
+										placeholder='비밀번호'
+										onChange={loginPwHandler}
+									/>
+									<div className='loginMid'>
+										<div className='findPw'>비밀번호 찾기</div>
+									</div>
+									<button className='loginBtn' onClick={loginClickHandler}>
+										{' '}
+										로그인{' '}
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+					<Overlay close={close} />
+				</>
 			) : null}
 		</>
 	);

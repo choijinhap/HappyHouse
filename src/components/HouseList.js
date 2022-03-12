@@ -24,7 +24,12 @@ function HouseList() {
 	}, [county]);
 	function pageChange(p) {
 		setPage((cur) => {
-			if (cur + p >= 0 && (cur + p) * MAX_LIST_NUM < houses.length) {
+			if (
+				cur + p >= 0 &&
+				(town
+					? (cur + p) * MAX_LIST_NUM < filteredHouses.length
+					: (cur + p) * MAX_LIST_NUM < houses.length)
+			) {
 				console.log(cur + p);
 				const sh = [];
 				for (

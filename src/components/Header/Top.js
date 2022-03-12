@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from './Button';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -34,7 +34,25 @@ function Top({ setUserInfo, userInfo }) {
 		closeModal();
 		setIsUserInfoModalOpen(true);
 	}
-
+	useEffect(() => {
+		if (
+			isSignInModalOpen ||
+			isSignUpModalOpen ||
+			isSignOutModalOpen ||
+			isUserInfoModalOpen
+		) {
+			document.body.style.cssText = `
+		  position: fixed; 
+		  top: -${window.scrollY}px;
+		  overflow-y: scroll;
+		  width: 100%;`;
+			return () => {
+				const scrollY = document.body.style.top;
+				document.body.style.cssText = '';
+				window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+			};
+		}
+	});
 	return (
 		<div className='top'>
 			{!userInfo ? (
