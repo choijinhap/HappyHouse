@@ -13,7 +13,7 @@ function SignOut({ isOpen, close, setUserInfo }) {
 						<div>
 							<div className='loginModal'>
 								<div className='modal-header'>
-									<h1 className='title'>로그인</h1>
+									<h1 className='title'></h1>
 									<img
 										className='close'
 										onClick={close}

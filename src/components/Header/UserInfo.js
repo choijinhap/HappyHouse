@@ -9,7 +9,7 @@ function userInfo({ isOpen, close, userInfo }) {
 						<div>
 							<div className='loginModal'>
 								<div className='modal-header'>
-									<h1 className='title'>로그인</h1>
+									<h1 className='title'>회원정보</h1>
 									<img
 										className='close'
 										onClick={close}

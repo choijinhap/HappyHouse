@@ -6,6 +6,9 @@ import MainLeft from './components/MainLeft';
 import getRegions from './API/Region';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import './css/App.css';
+import Search from './components/Search';
+import Footer from './components/Footer';
+import Map from './components/Map';
 function App() {
 	const [sido, setSido] = useState();
 	const [gugun, setGugun] = useState([]);
@@ -55,7 +58,6 @@ function App() {
 	}, [county]);
 	useEffect(() => {
 		if (pathname === '/') setCity('0');
-		// let path=pathname.split()
 		console.log(pathname.split('/'));
 		if (pathname.split('/')[1] === 'search') {
 			const path = pathname.split('/');
@@ -74,83 +76,26 @@ function App() {
 			<div className='main_img'>
 				<img src='/img/main_image.png' />
 			</div>
-			<div className='search'>
-				{sido && (
-					<DropDown
-						head='도 / 광역시'
-						selected={city}
-						options={sido}
-						onChange={onCityChange}
-					/>
-				)}
-				{gugun && (
-					<DropDown
-						head='시 / 구 / 군'
-						selected={county}
-						options={gugun
-							.filter((c) => {
-								return (
-									city.slice(0, 2) === c.code.slice(0, 2) &&
-									c.name.split(' ').length > 1
-								);
-							})
-							.map((c) => {
-								let newName = c.name.split(' ');
-								newName.shift();
-
-								return { code: c.code, name: newName.join(' ') };
-							})}
-						onChange={onCountyChange}
-					/>
-				)}
-				{dong && (
-					<DropDown
-						head='동선택'
-						selected={town}
-						options={dong
-							.filter((d) => {
-								return (
-									county.slice(0, 5) === d.code.slice(0, 5) &&
-									d.name.split(' ').length > 2
-								);
-							})
-							.map((d) => {
-								let newName = d.name.split(' ');
-								newName.shift();
-								newName.shift();
-								return { code: d.code, name: newName.join(' ') };
-							})}
-						onChange={onTownChange}
-					/>
-				)}
-			</div>
+			<Search
+				sido={sido}
+				city={city}
+				onCityChange={onCityChange}
+				county={county}
+				gugun={gugun}
+				onCountyChange={onCountyChange}
+				dong={dong}
+				town={town}
+				onTownChange={onTownChange}
+			/>
 			<div className='main'>
 				<Routes>
 					<Route path='/' element={<MainLeft />} />
 					<Route path='/search/:county' element={<HouseList />} />
 					<Route path='/search/:county/:town' element={<HouseList />} />
 				</Routes>
-				<div className='map'>
-					<img
-						src='/img/map.png'
-						alt=''
-						style={{ width: '600px', height: '800px' }}
-					/>
-				</div>
+				<Map />
 			</div>
-			<div className='footer'>
-				<div className='contact'>
-					<div className='member'>
-						<div>김우건</div>
-						<div>rladnrjs123@gmail.com</div>
-					</div>
-					<div className='member'>
-						<div>최진합</div>
-						<div>wlsgkq123@gmail.com</div>
-					</div>
-				</div>
-				<p>Copyright by SSAFY All rights reserved.</p>
-			</div>
+			<Footer />
 		</div>
 	);
 }
