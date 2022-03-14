@@ -1,9 +1,23 @@
 import { useEffect, useState } from 'react';
-import Button from './Button';
+import MyButton from './MyButton';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import SignOut from './SignOut';
 import UserInfo from './UserInfo';
+import Modal from '@mui/material/Modal';
+
+const style = {
+	position: 'absolute',
+	top: '50%',
+	left: '50%',
+	transform: 'translate(-50%, -50%)',
+	width: 400,
+	bgcolor: 'background.paper',
+	border: '2px solid #000',
+	boxShadow: 24,
+	p: 4,
+};
+
 function Top({ setUserInfo, userInfo }) {
 	const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
 	const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
@@ -42,7 +56,7 @@ function Top({ setUserInfo, userInfo }) {
 			isUserInfoModalOpen
 		) {
 			document.body.style.cssText = `
-		  position: fixed; 
+		  position: fixed;
 		  top: -${window.scrollY}px;
 		  overflow-y: scroll;
 		  width: 100%;`;
@@ -57,18 +71,16 @@ function Top({ setUserInfo, userInfo }) {
 		<div className='top'>
 			{!userInfo ? (
 				<>
-					<Button
-						text='로그인'
-						onClick={openSignInModal}
-						component={
-							<SignIn
-								setUserInfo={setUserInfo}
-								isOpen={isSignInModalOpen}
-								close={closeModal}
-							/>
-						}
-					/>
-					<Button
+					<MyButton text='로그인' onClick={openSignInModal} />
+					<Modal
+						open={isSignInModalOpen}
+						onClose={closeModal}
+						aria-labelledby='modal-modal-title'
+						aria-describedby='modal-modal-description'
+					>
+						<SignIn setUserInfo={setUserInfo} style={style} />
+					</Modal>
+					<MyButton
 						text='회원가입'
 						onClick={openSignUpModal}
 						component={<SignUp isOpen={isSignUpModalOpen} close={closeModal} />}
@@ -77,7 +89,7 @@ function Top({ setUserInfo, userInfo }) {
 			) : null}
 			{userInfo ? (
 				<>
-					<Button
+					<MyButton
 						text='로그아웃'
 						onClick={openSignOutModal}
 						component={
@@ -88,7 +100,7 @@ function Top({ setUserInfo, userInfo }) {
 							/>
 						}
 					/>
-					<Button
+					<MyButton
 						text='회원정보'
 						onClick={openUserInfoModal}
 						component={

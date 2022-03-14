@@ -13,7 +13,22 @@
 	margin: auto 0;
 }
 
-.nav .menu > div{
-    margin: 0 15px;
-    font-weight: 600;
+.nav .menu > a {
+	margin: 0 15px;
+	font-weight: 600;
+}
+
+.nav a {
+	margin: 10px;
+	color: white;
+	cursor: pointer;
+	color: rgba(61, 61, 61, 0.9);
+}
+.nav a:hover {
+	transform: scale(1.1);
+	color: rgb(0, 0, 0);
+	transition: transform ease-in-out 0.2s;
+}
+.nav a:last-of-type{
+	margin-right: 5vw;
 }

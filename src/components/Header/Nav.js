@@ -9,11 +9,11 @@ function Nav() {
 				</Link>
 			</div>
 			<nav className='menu'>
-				<div>공지 사항</div>
-				<div>오늘의 뉴스</div>
-				<div>주변 탐방</div>
-				<div>관심 지역 설정</div>
-				<div>관심 지역 둘러보기</div>
+				<a>공지 사항</a>
+				<a>오늘의 뉴스</a>
+				<a>주변 탐방</a>
+				<a>관심 지역 설정</a>
+				<a>관심 지역 둘러보기</a>
 			</nav>
 		</div>
 	);

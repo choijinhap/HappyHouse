@@ -18,11 +18,12 @@
 .modal-header > * {
 	margin: 20px;
 }
-.modal-header .title {
-	margin-left: 40px;
-}
 .modal-header .close {
 	margin-right: 40px;
+	cursor: pointer;
+}
+.modal-contents button {
+	cursor: pointer;
 }
 .modal-contents {
 	margin-top: 50px;

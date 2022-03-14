@@ -4,7 +4,7 @@ function Footer() {
 			<div className='contact'>
 				<div className='member'>
 					<div>김우건</div>
-					<div>rladnrjs123@gmail.com</div>
+					<div>dnrjs8185@naver.com</div>
 				</div>
 				<div className='member'>
 					<div>최진합</div>

@@ -25,6 +25,11 @@ function SignUp({ isOpen, close }) {
 	}
 
 	function signUpClickHandler() {
+		console.log(`id : ${id}`);
+		console.log(`pw : ${pw}`);
+		console.log(`name : ${name}`);
+		console.log(`address : ${address}`);
+		console.log(`tel : ${tel}`);
 		const userInfos = JSON.parse(localStorage.getItem('userInfos'));
 		if (userInfos) {
 			for (let userInfo of userInfos) {
@@ -35,21 +40,25 @@ function SignUp({ isOpen, close }) {
 			}
 		}
 		//회원가입 가능
-		if (userInfos) {
-			localStorage.setItem(
-				'userInfos',
-				JSON.stringify([
-					{ id, pw, name, tel, address },
-					...JSON.parse(localStorage.getItem('userInfos')),
-				])
-			);
-		} else {
-			localStorage.setItem(
-				'userInfos',
-				JSON.stringify([{ id, pw, name, tel, address }])
-			);
+		if (id && pw && name && address && tel) {
+			if (userInfos) {
+				localStorage.setItem(
+					'userInfos',
+					JSON.stringify([
+						{ id, pw, name, tel, address },
+						...JSON.parse(localStorage.getItem('userInfos')),
+					])
+				);
+			} else {
+				localStorage.setItem(
+					'userInfos',
+					JSON.stringify([{ id, pw, name, tel, address }])
+				);
+			}
+			alert('회원가입되었습니다.');
+		}else{
+			alert('내용 채워주세요')
 		}
-		alert('회원가입되었습니다.');
 	}
 
 	return (

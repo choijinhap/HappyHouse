@@ -4,6 +4,7 @@ function SignOut({ isOpen, close, setUserInfo }) {
 	function signOutClickHandler() {
 		//로그아웃로직처리
 		setUserInfo(null);
+		console.log('로그아웃되었습니다.')
 	}
 	return (
 		<>
