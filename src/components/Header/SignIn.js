@@ -67,7 +67,8 @@ function SignIn({ setUserInfo, style }) {
 					id='email'
 					label='아이디'
 					name='email'
-					autoComplete='email'
+					// autoComplete='email'
+					autoComplete='off'
 					autoFocus
 					onChange={loginIdHandler}
 				/>
@@ -79,7 +80,8 @@ function SignIn({ setUserInfo, style }) {
 					label='비밀번호'
 					type='password'
 					id='password'
-					autoComplete='current-password'
+					// autoComplete='current-password'
+					autoComplete='off'
 					onChange={loginPwHandler}
 				/>
 				<FormControlLabel

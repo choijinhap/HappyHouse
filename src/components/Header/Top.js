@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MyButton from './MyButton';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -67,6 +67,10 @@ function Top({ setUserInfo, userInfo }) {
 			};
 		}
 	});
+	const MySignIn = React.forwardRef((props, ref) => (
+		<SignIn role='Box' {...props} />
+	));
+
 	return (
 		<div className='top'>
 			{!userInfo ? (
@@ -78,7 +82,7 @@ function Top({ setUserInfo, userInfo }) {
 						aria-labelledby='modal-modal-title'
 						aria-describedby='modal-modal-description'
 					>
-						<SignIn setUserInfo={setUserInfo} style={style} />
+						<MySignIn setUserInfo={setUserInfo} style={style} />
 					</Modal>
 					<MyButton
 						text='회원가입'
