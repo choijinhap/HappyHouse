@@ -13,7 +13,12 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-export default function SignIn({ setUserInfo, style, close }) {
+export default function SignIn({
+	setUserInfo,
+	style,
+	close,
+	setIsSignUpModalOpen,
+}) {
 	const [id, setId] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -28,9 +33,12 @@ export default function SignIn({ setUserInfo, style, close }) {
 	}
 	function check() {
 		const userInfos = JSON.parse(localStorage.getItem('userInfos'));
-		for (let info of userInfos) {
-			if (id === info.id && password === info.password) return true;
+		if (userInfos) {
+			for (let info of userInfos) {
+				if (id === info.id && password === info.password) return true;
+			}
 		}
+		return false;
 	}
 	function loginClickHandler() {
 		console.log(`id : ${id}`);
@@ -39,7 +47,8 @@ export default function SignIn({ setUserInfo, style, close }) {
 		if (check()) {
 			console.log('로그인되었습니다');
 			//수정 : 로그인되면 로그인처리
-			// setUserInfo();
+			const userInfos = JSON.parse(localStorage.getItem('userInfos'));
+			setUserInfo(userInfos.find((i) => i.id === id));
 			close();
 			return;
 		}
@@ -113,8 +122,15 @@ export default function SignIn({ setUserInfo, style, close }) {
 							</Link>
 						</Grid>
 						<Grid item>
-							<Link href='#' variant='body2'>
-								{'회원가입'}
+							<Link
+								href='#'
+								variant='body2'
+								onClick={() => {
+									close();
+									setIsSignUpModalOpen(true);
+								}}
+							>
+								회원가입
 							</Link>
 						</Grid>
 					</Grid>

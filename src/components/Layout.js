@@ -18,6 +18,8 @@ import { forwardRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import SignIn from './HeaderModal/SignIn';
 import SignUp from './HeaderModal/SignUp';
+import SignOut from './HeaderModal/SignOut';
+import UserInfo from './HeaderModal/UserInfo';
 
 const pages = [
 	{ name: '공지사항', link: 'notice' },
@@ -31,6 +33,17 @@ const settingsLogined = [
 	{ name: '로그아웃', menu: 'signOut' },
 	{ name: '유저정보', menu: 'userInfo' },
 ];
+const modalStyle = {
+	position: 'absolute',
+	top: '50%',
+	left: '50%',
+	transform: 'translate(-50%, -50%)',
+	width: 400,
+	bgcolor: 'background.paper',
+	border: '2px solid #000',
+	boxShadow: 24,
+	p: 4,
+};
 export default function Layout({ children }) {
 	const [anchorElUser, setAnchorElUser] = useState(null);
 	const [anchorElNav, setAnchorElNav] = useState(null);
@@ -38,22 +51,11 @@ export default function Layout({ children }) {
 	const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
 	const [isSignOutModalOpen, setIsSignOutModalOpen] = useState(false);
 	const [isUserInfoModalOpen, setIsUserInfoModalOpen] = useState(false);
+	const [userInfo, setUserInfo] = useState(null);
 
-	//수정 : 나중에 props로 받아야함 유저 로그인여부
-	const isLogined = false;
-	const settings = isLogined ? settingsLogined : settingsNotLogined;
+	const settings = userInfo ? settingsLogined : settingsNotLogined;
 	const navigate = useNavigate();
-	const modalStyle = {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
-		width: 400,
-		bgcolor: 'background.paper',
-		border: '2px solid #000',
-		boxShadow: 24,
-		p: 4,
-	};
+
 	const closeModal = () => {
 		setIsSignInModalOpen(false);
 		setIsSignUpModalOpen(false);
@@ -87,10 +89,32 @@ export default function Layout({ children }) {
 		}
 	};
 	const MySignIn = forwardRef((props, ref) => (
-		<SignIn role='Box' close={closeModal} {...props} />
+		<SignIn
+			role='Box'
+			close={closeModal}
+			setUserInfo={setUserInfo}
+			setIsSignUpModalOpen={setIsSignUpModalOpen}
+			{...props}
+		/>
 	));
 	const MySignUp = forwardRef((props, ref) => (
-		<SignUp role='Box' close={closeModal} {...props} />
+		<SignUp
+			role='Box'
+			close={closeModal}
+			setIsSignInModalOpen={setIsSignInModalOpen}
+			{...props}
+		/>
+	));
+	const MySignOut = forwardRef((props, ref) => (
+		<SignOut
+			role='Box'
+			close={closeModal}
+			setUserInfo={setUserInfo}
+			{...props}
+		/>
+	));
+	const MyUserInfo = forwardRef((props, ref) => (
+		<UserInfo role='Box' close={closeModal} userInfo={userInfo} {...props} />
 	));
 	return (
 		<Container component='main' maxWidth='lg'>
@@ -147,6 +171,16 @@ export default function Layout({ children }) {
 								))}
 							</Menu>
 						</Box>
+						<Link to='/' style={{ textDecoration: `none`, color: `white` }}>
+							<Typography
+								variant='h6'
+								noWrap
+								component='div'
+								sx={{ mr: 2, display: { xs: 'flex', md: 'none' } }}
+							>
+								Home
+							</Typography>
+						</Link>
 						<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 							{pages.map((page) => (
 								<Button
@@ -158,20 +192,13 @@ export default function Layout({ children }) {
 								</Button>
 							))}
 						</Box>
-						<Typography
-							variant='h6'
-							noWrap
-							component='div'
-							sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-						>
-							HOME
-						</Typography>
+
 						<Box sx={{ flexGrow: 0 }}>
 							<Tooltip title='Open settings'>
 								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-									{isLogined ? (
+									{userInfo ? (
 										<Avatar
-											alt='Remy Sharp'
+											alt={userInfo.name}
 											src='/static/images/avatar/2.jpg'
 										/>
 									) : (
@@ -195,29 +222,6 @@ export default function Layout({ children }) {
 								open={Boolean(anchorElUser)}
 								onClose={handleCloseUserMenu}
 							>
-								{/* {settings.map((setting) => {
-									return (
-										<MenuItem
-											key={setting.name}
-											onClick={() => handleCloseUserMenu(setting.menu)}
-										>
-											<Typography textAlign='center'>{setting.name}</Typography>
-											<Modal
-												open={isSignInModalOpen}
-												onClose={closeModal}
-												aria-labelledby='modal-modal-title'
-												aria-describedby='modal-modal-description'
-											>
-												<MySignIn
-												// 수정 : 이부분 동적으로 모달 열 컴포넌트 렌더링 해줘야함
-													//수정 : 렌더링 하는 컴포넌트에 따라 함수 수정필요
-													// setUserInfo={setUserInfo}
-													style={modalStyle}
-												/>
-											</Modal>
-										</MenuItem>
-									);
-								})} */}
 								{settings.map((setting) => {
 									return (
 										<MenuItem
@@ -238,11 +242,7 @@ export default function Layout({ children }) {
 					aria-labelledby='modal-modal-title'
 					aria-describedby='modal-modal-description'
 				>
-					<MySignIn
-						//수정 : 렌더링 하는 컴포넌트에 따라 함수 수정필요
-						// setUserInfo={setUserInfo}
-						style={modalStyle}
-					/>
+					<MySignIn style={modalStyle} />
 				</Modal>
 				<Modal
 					open={isSignUpModalOpen}
@@ -250,11 +250,7 @@ export default function Layout({ children }) {
 					aria-labelledby='modal-modal-title'
 					aria-describedby='modal-modal-description'
 				>
-					<MySignUp
-						//수정 : 렌더링 하는 컴포넌트에 따라 함수 수정필요
-						// setUserInfo={setUserInfo}
-						style={modalStyle}
-					/>
+					<MySignUp style={modalStyle} />
 				</Modal>
 				<Modal
 					open={isSignOutModalOpen}
@@ -262,11 +258,7 @@ export default function Layout({ children }) {
 					aria-labelledby='modal-modal-title'
 					aria-describedby='modal-modal-description'
 				>
-					<MySignUp
-						//수정 : 렌더링 하는 컴포넌트에 따라 함수 수정필요
-						// setUserInfo={setUserInfo}
-						style={modalStyle}
-					/>
+					<MySignOut style={modalStyle} />
 				</Modal>
 				<Modal
 					open={isUserInfoModalOpen}
@@ -274,11 +266,7 @@ export default function Layout({ children }) {
 					aria-labelledby='modal-modal-title'
 					aria-describedby='modal-modal-description'
 				>
-					<MySignUp
-						//수정 : 렌더링 하는 컴포넌트에 따라 함수 수정필요
-						// setUserInfo={setUserInfo}
-						style={modalStyle}
-					/>
+					<MyUserInfo style={modalStyle} />
 				</Modal>
 			</AppBar>
 			{children}

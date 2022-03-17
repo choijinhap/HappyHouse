@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useState } from 'react';
 
-export default function SignUp({ style, close }) {
+export default function SignUp({ style, close, setIsSignInModalOpen }) {
 	const [id, setId] = useState('');
 	const [password, setPassword] = useState('');
 	const [name, setName] = useState('');
@@ -75,7 +75,6 @@ export default function SignUp({ style, close }) {
 		});
 		if (check()) {
 			alert('회원가입되었습니다.');
-			console.log(style);
 			close();
 		}
 		return false;
@@ -178,7 +177,14 @@ export default function SignUp({ style, close }) {
 					</Button>
 					<Grid container justifyContent='flex-end'>
 						<Grid item>
-							<Link href='#' variant='body2'>
+							<Link
+								href='#'
+								variant='body2'
+								onClick={() => {
+									close();
+									setIsSignInModalOpen(true);
+								}}
+							>
 								이미 회원이신가요? 로그인하기
 							</Link>
 						</Grid>
