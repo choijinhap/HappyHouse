@@ -53,7 +53,7 @@ export default function SearchSelect() {
 				>
 					{dosi.map((d) => (
 						<MenuItem key={d.code} value={d.code}>
-							{d.name.split(' ')[d.name.split(' ').length-1]}
+							{d.name.split(' ')[d.name.split(' ').length - 1]}
 						</MenuItem>
 					))}
 				</Select>
@@ -69,7 +69,7 @@ export default function SearchSelect() {
 				>
 					{gugun.map((d) => (
 						<MenuItem key={d.code} value={d.code}>
-							{d.name.split(' ')[d.name.split(' ').length-1]}
+							{d.name.split(' ')[d.name.split(' ').length - 1]}
 						</MenuItem>
 					))}
 				</Select>
@@ -85,7 +85,7 @@ export default function SearchSelect() {
 				>
 					{dong.map((d) => (
 						<MenuItem key={d.code} value={d.code}>
-							{d.name.split(' ')[d.name.split(' ').length-1]}
+							{d.name.split(' ')[d.name.split(' ').length - 1]}
 						</MenuItem>
 					))}
 				</Select>

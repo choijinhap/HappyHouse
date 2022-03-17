@@ -1,9 +1,9 @@
 import axios from 'axios';
+const serviceKey =
+	'ACaENE9czfF4fNtrQMueeCFsAn7vX63M1cSNubEx3MrWdnNBeYQh2UGmRO7p0PE0ohxDPTTbq%2B1T4l4%2BK5SY8w%3D%3D';
 async function getHouseData(pageNo, numOfRows, LAWD_CD, DEAL_YMD) {
 	const url =
 		'/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev';
-	const serviceKey =
-		'ACaENE9czfF4fNtrQMueeCFsAn7vX63M1cSNubEx3MrWdnNBeYQh2UGmRO7p0PE0ohxDPTTbq%2B1T4l4%2BK5SY8w%3D%3D';
 	try {
 		const response = await axios({
 			url: `${url}?serviceKey=${serviceKey}&pageNo=${pageNo}&numOfRows=${numOfRows}&LAWD_CD=${LAWD_CD}&DEAL_YMD=${DEAL_YMD}`,

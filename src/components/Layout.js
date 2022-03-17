@@ -11,10 +11,11 @@ import {
 	Toolbar,
 	Tooltip,
 	Typography,
+	useScrollTrigger,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import MenuIcon from '@mui/icons-material/Menu';
-import { forwardRef, useState } from 'react';
+import { cloneElement, forwardRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import SignIn from './HeaderModal/SignIn';
 import SignUp from './HeaderModal/SignUp';
@@ -44,7 +45,23 @@ const modalStyle = {
 	boxShadow: 24,
 	p: 4,
 };
-export default function Layout({ children }) {
+function ElevationScroll(props) {
+	const { children, window } = props;
+	// Note that you normally won't need to set the window ref as useScrollTrigger
+	// will default to window.
+	// This is only being set here because the demo is in an iframe.
+	const trigger = useScrollTrigger({
+		disableHysteresis: true,
+		threshold: 0,
+		target: window ? window() : undefined,
+	});
+
+	return cloneElement(children, {
+		elevation: trigger ? 4 : 0,
+	});
+}
+
+export default function Layout(props) {
 	const [anchorElUser, setAnchorElUser] = useState(null);
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
@@ -119,157 +136,161 @@ export default function Layout({ children }) {
 	return (
 		<Container component='main' maxWidth='lg'>
 			<CssBaseline />
-			<AppBar position='static'>
-				<Container maxWidth='xl'>
-					<Toolbar disableGutters>
-						<Link to='/' style={{ textDecoration: `none`, color: `white` }}>
-							<Typography
-								variant='h6'
-								noWrap
-								component='div'
-								sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-							>
-								Home
-							</Typography>
-						</Link>
-						<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-							<IconButton
-								size='large'
-								aria-label='account of current user'
-								aria-controls='menu-appbar'
-								aria-haspopup='true'
-								onClick={handleOpenNavMenu}
-								color='inherit'
-							>
-								<MenuIcon />
-							</IconButton>
-							<Menu
-								id='menu-appbar'
-								anchorEl={anchorElNav}
-								anchorOrigin={{
-									vertical: 'bottom',
-									horizontal: 'left',
-								}}
-								keepMounted
-								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'left',
-								}}
-								open={Boolean(anchorElNav)}
-								onClose={handleCloseNavMenu}
-								sx={{
-									display: { xs: 'block', md: 'none' },
-								}}
-							>
+			<ElevationScroll {...props}>
+				<AppBar>
+					<Container maxWidth='xl'>
+						<Toolbar disableGutters>
+							<Link to='/' style={{ textDecoration: `none`, color: `white` }}>
+								<Typography
+									variant='h6'
+									noWrap
+									component='div'
+									sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+								>
+									Home
+								</Typography>
+							</Link>
+							<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+								<IconButton
+									size='large'
+									aria-label='account of current user'
+									aria-controls='menu-appbar'
+									aria-haspopup='true'
+									onClick={handleOpenNavMenu}
+									color='inherit'
+								>
+									<MenuIcon />
+								</IconButton>
+								<Menu
+									id='menu-appbar'
+									anchorEl={anchorElNav}
+									anchorOrigin={{
+										vertical: 'bottom',
+										horizontal: 'left',
+									}}
+									keepMounted
+									transformOrigin={{
+										vertical: 'top',
+										horizontal: 'left',
+									}}
+									open={Boolean(anchorElNav)}
+									onClose={handleCloseNavMenu}
+									sx={{
+										display: { xs: 'block', md: 'none' },
+									}}
+								>
+									{pages.map((page) => (
+										<MenuItem
+											key={page.name}
+											onClick={() => handleCloseNavMenu(page.link)}
+										>
+											<Typography textAlign='center'>{page.link}</Typography>
+										</MenuItem>
+									))}
+								</Menu>
+							</Box>
+							<Link to='/' style={{ textDecoration: `none`, color: `white` }}>
+								<Typography
+									variant='h6'
+									noWrap
+									component='div'
+									sx={{ mr: 2, display: { xs: 'flex', md: 'none' } }}
+								>
+									Home
+								</Typography>
+							</Link>
+							<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 								{pages.map((page) => (
-									<MenuItem
+									<Button
 										key={page.name}
 										onClick={() => handleCloseNavMenu(page.link)}
+										sx={{ my: 2, color: 'white', display: 'block' }}
 									>
-										<Typography textAlign='center'>{page.link}</Typography>
-									</MenuItem>
+										{page.name}
+									</Button>
 								))}
-							</Menu>
-						</Box>
-						<Link to='/' style={{ textDecoration: `none`, color: `white` }}>
-							<Typography
-								variant='h6'
-								noWrap
-								component='div'
-								sx={{ mr: 2, display: { xs: 'flex', md: 'none' } }}
-							>
-								Home
-							</Typography>
-						</Link>
-						<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-							{pages.map((page) => (
-								<Button
-									key={page.name}
-									onClick={() => handleCloseNavMenu(page.link)}
-									sx={{ my: 2, color: 'white', display: 'block' }}
-								>
-									{page.name}
-								</Button>
-							))}
-						</Box>
+							</Box>
 
-						<Box sx={{ flexGrow: 0 }}>
-							<Tooltip title='Open settings'>
-								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-									{userInfo ? (
-										<Avatar
-											alt={userInfo.name}
-											src='/static/images/avatar/2.jpg'
-										/>
-									) : (
-										<Avatar src='/broken-image.jpg' />
-									)}
-								</IconButton>
-							</Tooltip>
-							<Menu
-								sx={{ mt: '45px' }}
-								id='menu-appbar'
-								anchorEl={anchorElUser}
-								anchorOrigin={{
-									vertical: 'top',
-									horizontal: 'right',
-								}}
-								keepMounted
-								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'right',
-								}}
-								open={Boolean(anchorElUser)}
-								onClose={handleCloseUserMenu}
-							>
-								{settings.map((setting) => {
-									return (
-										<MenuItem
-											key={setting.name}
-											onClick={() => handleCloseUserMenu(setting.menu)}
-										>
-											<Typography textAlign='center'>{setting.name}</Typography>
-										</MenuItem>
-									);
-								})}
-							</Menu>
-						</Box>
-					</Toolbar>
-				</Container>
-				<Modal
-					open={isSignInModalOpen}
-					onClose={closeModal}
-					aria-labelledby='modal-modal-title'
-					aria-describedby='modal-modal-description'
-				>
-					<MySignIn style={modalStyle} />
-				</Modal>
-				<Modal
-					open={isSignUpModalOpen}
-					onClose={closeModal}
-					aria-labelledby='modal-modal-title'
-					aria-describedby='modal-modal-description'
-				>
-					<MySignUp style={modalStyle} />
-				</Modal>
-				<Modal
-					open={isSignOutModalOpen}
-					onClose={closeModal}
-					aria-labelledby='modal-modal-title'
-					aria-describedby='modal-modal-description'
-				>
-					<MySignOut style={modalStyle} />
-				</Modal>
-				<Modal
-					open={isUserInfoModalOpen}
-					onClose={closeModal}
-					aria-labelledby='modal-modal-title'
-					aria-describedby='modal-modal-description'
-				>
-					<MyUserInfo style={modalStyle} />
-				</Modal>
-			</AppBar>
-			{children}
+							<Box sx={{ flexGrow: 0 }}>
+								<Tooltip title='Open settings'>
+									<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+										{userInfo ? (
+											<Avatar
+												alt={userInfo.name}
+												src='/static/images/avatar/2.jpg'
+											/>
+										) : (
+											<Avatar src='/broken-image.jpg' />
+										)}
+									</IconButton>
+								</Tooltip>
+								<Menu
+									sx={{ mt: '45px' }}
+									id='menu-appbar'
+									anchorEl={anchorElUser}
+									anchorOrigin={{
+										vertical: 'top',
+										horizontal: 'right',
+									}}
+									keepMounted
+									transformOrigin={{
+										vertical: 'top',
+										horizontal: 'right',
+									}}
+									open={Boolean(anchorElUser)}
+									onClose={handleCloseUserMenu}
+								>
+									{settings.map((setting) => {
+										return (
+											<MenuItem
+												key={setting.name}
+												onClick={() => handleCloseUserMenu(setting.menu)}
+											>
+												<Typography textAlign='center'>
+													{setting.name}
+												</Typography>
+											</MenuItem>
+										);
+									})}
+								</Menu>
+							</Box>
+						</Toolbar>
+					</Container>
+					<Modal
+						open={isSignInModalOpen}
+						onClose={closeModal}
+						aria-labelledby='modal-modal-title'
+						aria-describedby='modal-modal-description'
+					>
+						<MySignIn style={modalStyle} />
+					</Modal>
+					<Modal
+						open={isSignUpModalOpen}
+						onClose={closeModal}
+						aria-labelledby='modal-modal-title'
+						aria-describedby='modal-modal-description'
+					>
+						<MySignUp style={modalStyle} />
+					</Modal>
+					<Modal
+						open={isSignOutModalOpen}
+						onClose={closeModal}
+						aria-labelledby='modal-modal-title'
+						aria-describedby='modal-modal-description'
+					>
+						<MySignOut style={modalStyle} />
+					</Modal>
+					<Modal
+						open={isUserInfoModalOpen}
+						onClose={closeModal}
+						aria-labelledby='modal-modal-title'
+						aria-describedby='modal-modal-description'
+					>
+						<MyUserInfo style={modalStyle} />
+					</Modal>
+				</AppBar>
+			</ElevationScroll>
+			<Box sx={{ my: 9 }}>{props.children}</Box>
 		</Container>
 	);
 }
