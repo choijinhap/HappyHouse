@@ -9,7 +9,7 @@ const containerStyle = {
 };
 
 function Gmap({ houses }) {
-	Geocode.setApiKey('AIzaSyCKCaHeSqYGKMk2y4cP0C8RQT1ya8aHTn4');
+	Geocode.setApiKey('');
 	Geocode.setRegion('kr');
 	Geocode.setLanguage('ko');
 	const [center, setCenter] = useState({ lat: 37.56, lng: 126.97 });
